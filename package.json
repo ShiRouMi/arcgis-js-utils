@@ -1,0 +1,36 @@
+{
+  "name": "arcgis-js-utils",
+  "private": false,
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./dist/arcgis-js-utils.umd.cjs",
+  "module": "./dist/arcgis-js-utils.js",
+  "files": [
+    "dist/*"
+  ],
+  "homepage": "https://github.com/ShiRouMi/arcgis-js-utils",
+  "exports": {
+    ".": {
+      "import": "./dist/arcgis-js-utils.js",
+      "require": "./arcgis-js-utils.umd.cjs"
+    }
+  },
+  "keywords": [
+    "arcgis",
+    "map",
+    "utils"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build_tsc": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "@arcgis/core": "^4.29.10"
+  }
+}
