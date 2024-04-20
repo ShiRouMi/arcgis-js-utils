@@ -72,7 +72,7 @@ export default class ArcgisMapUtils {
     if (container) {
       this._mapView = new MapView({
         ...DEFAULT_OPTIONS.MapView,
-        container, // 这里不能取一个随机值，要和 dom 中元素对于
+        container, // 这里不能取一个随机值，要和 dom 中元素对应
         map: this._map,
       });
       this.#removeViewUI();
@@ -112,6 +112,7 @@ export default class ArcgisMapUtils {
     const t = getKey(targetEnum, target);
     t.on(eventName, callback);
   }
+
   /**
    * 初始化定位 widget
    * @returns
@@ -139,11 +140,73 @@ export default class ArcgisMapUtils {
   }
 
   /**
-   * 图层的命名都是 addXXXLayer
+   * 添加图层
+   * @param type 图层类型
+   * @param opt
    */
+  add(type: string, opt: any) {
+    if (type) {
+      switch (type) {
+        case "FeatureLayer": // 要素
+          this.addFeatureLayer(opt);
+          break;
+        case "GraphicsLayer": // 图形
+          this.addGraphicsLayer(opt);
+          break;
+        case "TileLayer":
+          this.addTileLayer(opt);
+          break;
+        case "TileLayer4490": // 4490切片
+          this.addTileLayer4490(opt);
+          break;
+        case "VectorTileLayer": // 矢量切片
+          this.addVectorTileLayer(opt);
+          break;
+        case "GeoJSONLayer": // geojson
+          this.addGeoJSONLayer(opt);
+          break;
+        case "ImageryLayer":
+          this.addImageryLayer(opt);
+          break;
+        case "ImageryTileLayer":
+          this.addImageryTileLayer(opt);
+          break;
+        case "DynamicLayer":
+        case "MapImageLayer":
+          this.addMapImageLayer(opt); // 动态范围
+          break;
+        case "GroupLayer":
+          this.addGroupLayer(opt); // 组合图层
+          break;
+        case "WebTileLayer":
+          this.addWebTileLayer(opt);
+          break;
+        case "WFSLayer":
+          this.addWFSLayer(opt);
+          break;
+        case "WMSLayer":
+          this.addWMSLayer(opt);
+          break;
+        case "Heatmap": // 热力图
+          this.addHeatmapRenderer(opt);
+          break;
+        case "Cluster": // 统计
+          this.addClusterRenderer(opt);
+          break;
+        case "Grid": // 网格
+          this.addGridRenderer(opt);
+          break;
+        default:
+          throw new Error(ERROR_MSG.layerTypeError);
+      }
+    } else {
+      throw new Error(ERROR_MSG.layerTypeError);
+    }
+  }
 
   /**
    * 添加要素图层
+   * 在一个地图服务或者要素服务的图层上显示要素，该层可以是(空间)层，也可以是(非空间)表。
    * @param opt
    * @returns
    */
@@ -153,16 +216,58 @@ export default class ArcgisMapUtils {
     this._map.add(layer, opt.index);
     return layer;
   }
+  addGraphicsLayer(opt) {}
+  addTileLayer4490(opt) {}
+  addGeoJSONLayer(opt) {}
+  addTileLayer(opt) {}
+  addDynamicLayer(opt) {}
+  /**
+   * 矢量切片
+   * @param opt
+   */
+  addVectorTileLayer(opt) {}
+  addGroupLayer(opt) {}
 
+  /**
+   * Represents a dynamic image service resource as a layer.
+   * 区别 addMapImageLayer 这两类啥差别
+   * @param opt
+   */
+  addImageryLayer(opt) {}
+
+  /**
+   * ImageryTileLayer presents raster data from a tiled image service.
+   * Binary imagery tiles are projected, processed, and rendered on the client-side.
+   * Tiled access is fast and scalable.
+   * @param opt
+   */
+  addImageryTileLayer(opt) {}
+
+  /**
+   * 向地图添加地理引用图像,该地图将把地理参照图像放置在指定的地理范围内。
+   * MapImageLayer allows you to display, query, and analyze layers from data defined in a map service.
+   * 支持 sublayer
+   * 这个应该就是对应 3 里面的ArcGISDynamicMapServiceLayer
+   * @param opt
+   */
+  addMapImageLayer(opt) {}
+  addWFSLayer(opt) {}
+  /**
+   * OGC Web Map Services (WMS)
+   * @param opt
+   */
+  addWMSLayer(opt) {}
+  addWebTileLayer(opt) {}
   /**
    * 网格 聚合 热力图命名是 addXXXRenderer
    */
-  addGridRenderer() {}
+  addGridRenderer(opt) {}
 
-  addClusterRenderer() {}
+  addClusterRenderer(opt) {}
 
-  addHeatmapRenderer() {}
+  addHeatmapRenderer(opt) {}
 
+  // ========================= 图层 =======================
   /**
    * 移除图层
    * @param layer
@@ -189,16 +294,51 @@ export default class ArcgisMapUtils {
     this._map.removeAll();
   }
 
+  /**
+   * 切换图层显隐
+   * @param layer
+   * @param visible
+   */
   toggleLayerVisible(layer, visible: boolean) {
     layer.visible = visible;
   }
 
+  /**
+   * 根据 layerId 切换图层显隐
+   * @param layerId
+   * @param visible
+   */
   toggleLayerVisibleById(layerId, visible: boolean) {
     const layer = this._map.findLayerById(layerId);
     if (layer) {
       this.toggleLayerVisible(layer, visible);
     }
   }
+  // ========================= 图形 =======================
+  // 创建图形 移除图形
+  // ========================= 缩放 =======================
+  /**
+   * 全图
+   */
+  fullmap() {
+    const center = DEFAULT_OPTIONS.MapView.center;
+    const zoom = DEFAULT_OPTIONS.MapView.zoom;
+    this.goTo({
+      center,
+      zoom,
+    });
+  }
 
-  goTo(target, opt) {}
+  /**
+   * https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html#goTo
+   * @param target target 可以有多种形式
+   * @param opt
+   */
+  goTo(target, opt?: any) {
+    if (this._mapView) {
+      this._mapView.goTo(target, opt);
+    } else {
+      throw new Error(ERROR_MSG.viewError);
+    }
+  }
 }

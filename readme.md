@@ -5,6 +5,7 @@
 ## 安装
 
 ```
+npm i @arcgis/core  // 必须安装
 npm i arcgis-js-utils
 ```
 
@@ -13,14 +14,17 @@ npm i arcgis-js-utils
 引入 arcgis-js-utils
 
 ```javascript
+import "@arcgis/core/assets/esri/themes/light/main.css"; // 必须调研
 import ArcgisJsUtils from "arcgis-js-utils";
 ```
 
 ### 地图
 
-```js
-  <div class="map-div" :id="mapDomId"></div>
+```vue
+<div class="map-div" :id="mapDomId"></div>
+```
 
+```js
   const mapDomId = 'testMap'
   const basemap = [] // 配置底图
   const arcgisMap = new ArcgisMapUtils({
@@ -40,10 +44,12 @@ import ArcgisJsUtils from "arcgis-js-utils";
 
 ```js
 const { _mapView } = arcgisMap;
+
 // 方式1
 arcgisMap.$on("view", "click", (e) => {
   console.log(e);
 });
+
 // 方式2
 _mapView.on("click", (e) => {
   console.log(e);
