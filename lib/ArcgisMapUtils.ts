@@ -315,7 +315,31 @@ export default class ArcgisMapUtils {
     }
   }
   // ========================= 图形 =======================
-  // 创建图形 移除图形
+
+  /**
+   * 根据图形 id 找到对应图形
+   * @param graphicId
+   * @returns
+   */
+  findGraphicByGraphicId(graphicId: string) {
+    if (this._map) {
+    } else {
+      throw new Error(ERROR_MSG.mapError);
+    }
+  }
+
+  /**
+   * 根据图形 id 和图层id 找到对应图形
+   * @param layerID
+   * @param graphicId
+   * @returns
+   */
+  findGraphicByGraphicIdAndLayerID(layerID: string, graphicId: string) {
+    if (this._map) {
+    } else {
+      throw new Error(ERROR_MSG.mapError);
+    }
+  }
   // ========================= 缩放 =======================
   /**
    * 全图
@@ -341,4 +365,6 @@ export default class ArcgisMapUtils {
       throw new Error(ERROR_MSG.viewError);
     }
   }
+
+  // ========================= 比例尺 =======================
 }

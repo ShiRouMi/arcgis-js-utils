@@ -5,7 +5,7 @@
 ## 安装
 
 ```
-npm i @arcgis/core  // 必须安装
+npm i @arcgis/core  // @arcgis/core 依赖没有打包进库，所以必须安装
 npm i arcgis-js-utils
 ```
 
@@ -18,7 +18,7 @@ import "@arcgis/core/assets/esri/themes/light/main.css"; // 必须调研
 import ArcgisJsUtils from "arcgis-js-utils";
 ```
 
-### 地图
+### 实例化
 
 ```vue
 <div class="map-div" :id="mapDomId"></div>
@@ -40,7 +40,18 @@ import ArcgisJsUtils from "arcgis-js-utils";
   })
 ```
 
-### 地图事件
+### 属性
+
+| 名称    | 类型 | 说明                             | 默认值 |
+| ------- | ---- | -------------------------------- | ------ |
+| Map     | --   | 与 Arcgis Map 一样的地图配置     | --     |
+| MapView | --   | 与 Arcgis MapView 一样的视图配置 | --     |
+| Locate  | --   | 与 Arcgis Locate 一样的定位配置  | --     |
+
+### 事件
+
+- arcgisMap 实例上提供了 $on 方法进行事件监听
+- 与原生 arcgis API 事件监听一样的方式
 
 ```js
 const { _mapView } = arcgisMap;

@@ -21,6 +21,7 @@ export const ERROR_MSG = {
   viewContainerError: "未传入地图容器 id，加载失败",
   basemapError: "未传入底图 basemap，加载失败",
   viewError: "视图不存在，加载失败",
+  mapError: "地图不存在，调用失败",
   urlError: "未传入服务地址，加载失败",
   apiFailed: "arcgis API 加载失败",
   layerTypeError: "未传入图层类型或者图层类型不存在，加载失败",
